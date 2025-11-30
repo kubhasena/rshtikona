@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shobhika Dravida – Dēvanāgarī Drāviḍā</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Shobhika Dravida – Dēvanāgarī Drāviḍā">
+    <meta property="og:description" content="Font modifications and implementation notes for Shobhika Dravida.">
+    <meta property="og:image" content="https://yourdomain.com/devanagari-dravida/og-image.jpg">
+    <meta property="og:url" content="https://yourdomain.com/devanagari-dravida/shobhikadravida.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Shobhika Dravida – Dēvanāgarī Drāviḍā">
+    <meta name="twitter:description" content="Font modifications and implementation notes for Shobhika Dravida.">
+    <meta name="twitter:image" content="https://yourdomain.com/devanagari-dravida/og-image.jpg">
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header__topline"></div>
+        <h1 class="site-header__title">Dēvanāgarī Drāviḍā</h1>
+        <button class="menu-toggle" aria-label="Open menu" onclick="document.querySelector('.site-header').classList.toggle('menu-open')">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="../index.html">Main Home</a>
+            <a href="index.html">Main Article</a>
+            <a href="glyphdesign.html">Glyph Design</a>
+            <a href="downloads.html">Downloads</a>
+        </div>
+    </header>
+    <div class="site-container">
+        <main class="site-main">
+            <h2 class="site-section__title module-title english-sans" style="font-size:2.1em; font-weight:800; margin-bottom:1.2em; text-align:center; letter-spacing:0.01em;">Shobhika Dravida</h2>
+            <section class="site-section">
+                <p class="english-serif">The Shobhika Dravida font is a modification of Prof K. Ramasubramanian's and Prof Girish Dalvi's <a href="https://github.com/Sandhi-IITBombay/Shobhika" target="_blank" rel="noopener">Shobhika font</a>, specifically modified to accommodate new characters and letterforms for transcribing Tamiḻ. This font is intended to serve as a working demonstration of the new letters. The aesthetic detail of the new letters may be somewhat limited by my meagre skill at graphic design, but the font is still very much usable.</p>
+                <p class="english-serif">For any interested font developers, I have provided below the list of modifications made to Shobhika to create Shobhika Dravida:</p>
+                <ul class="english-serif">
+                    <li>Replaced old <span class="dn-old">ऩ</span>, <span class="dn-old">ऱ</span>, <span class="dn-old">ऴ</span> glyphs with <span class="dn-dravida">ऩ</span>, <span class="dn-dravida">ऱ</span>, <span class="dn-dravida">ऴ</span></li>
+                    <li>Added <span class="dn-dravida">श़</span>, <span class="dn-dravida">त़</span>, and <span class="dn-dravida">द़</span></li>
+                    <li>Added <span class="dn-dravida">ஃ</span> at U+0B83 based off existing visarga glyph</li>
+                    <li>Added half-forms for <span class="dn-dravida">ऩ</span>, <span class="dn-dravida">ऱ</span>, <span class="dn-dravida">ऴ</span>, <span class="dn-dravida">त़</span>, and <span class="dn-dravida">द़</span></li>
+                    <li>Associated <span class="dn-dravida">ॖ</span> to Anchor-2 to enable proper rendering with consonants</li>
+                    <li>Assigned the existing <span class="dn-dravida">ैॅ</span> glyph to U+0948 + U+0945</li>
+                    <li>Added <span class="dn-dravida">ऐॅ</span> at U+0910 + U+0945</li>
+                    <li>Added conjuncts: <span class="dn-dravida">ऩ्ऱ</span>, <span class="dn-dravida">ऱ्ऱ</span>, <span class="dn-dravida">त़्त़</span>, <span class="dn-dravida">ऩ्द़</span>, <span class="dn-dravida">ऩ्द़्ऱ</span>, <span class="dn-dravida">त़्ऱ</span>, <span class="dn-dravida">त़्त़्ऱ</span></li>
+                    <li>Explicitly defined many conjuncts of <span class="dn-dravida">ऩ</span>, <span class="dn-dravida">ऱ</span>, <span class="dn-dravida">ऴ</span> with other consonants (these spill outside of personal use area)</li>
+                    <li>Regularised i-matra combining for all consonants and conjuncts</li>
+                </ul>
+                <p class="english-serif">The font modifications were implemented using FontForge and some auxillary Python scripts, with the aim of maintaining the aesthetic consistency of the original Shobhika font while incorporating the new Tamiḻ-specific characters.</p>
+                <div style="text-align:center; margin-top:2.5rem;">
+                  <a class="font-download" href="Shobhika-Dravida.otf" download>Download Shobhika-Dravida.otf</a>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('click', function(e) {
+            const header = document.querySelector('.site-header');
+            if (!header.contains(e.target) && header.classList.contains('menu-open')) {
+                header.classList.remove('menu-open');
+            }
+        });
+    </script>
+    <style>
+.font-download {
+    display: inline-block;
+    margin-bottom: 2.5rem;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--color-crimson);
+    background: transparent;
+    border: 2px solid var(--color-crimson);
+    padding: 0.5em 1.2em;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+.font-download:hover {
+    background: var(--color-crimson);
+    color: var(--color-gold);
+}
+</style>
+</body>
+</html>

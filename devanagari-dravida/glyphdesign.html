@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glyph Design – Dēvanāgarī Drāviḍā</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Glyph Design – Dēvanāgarī Drāviḍā">
+    <meta property="og:description" content="Design considerations for new Dēvanāgarī letters for Tamiḻ transcription.">
+    <meta property="og:image" content="https://yourdomain.com/devanagari-dravida/og-image.jpg">
+    <meta property="og:url" content="https://yourdomain.com/devanagari-dravida/glyphdesign.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Glyph Design – Dēvanāgarī Drāviḍā">
+    <meta name="twitter:description" content="Design considerations for new Dēvanāgarī letters for Tamiḻ transcription.">
+    <meta name="twitter:image" content="https://yourdomain.com/devanagari-dravida/og-image.jpg">
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header__topline"></div>
+        <h1 class="site-header__title">Dēvanāgarī Drāviḍā</h1>
+        <button class="menu-toggle" aria-label="Open menu" onclick="document.querySelector('.site-header').classList.toggle('menu-open')">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="../index.html">Main Home</a>
+            <a href="index.html">Main Article</a>
+            <a href="shobhikadravida.html">Shobhika Dravida</a>
+            <a href="downloads.html">Downloads</a>
+        </div>
+    </header>
+    <div class="site-container">
+        <main class="site-main">
+            <h2 class="site-section__title module-title english-sans" style="font-size:2.1em; font-weight:800; margin-bottom:1.2em; text-align:center; letter-spacing:0.01em;">Character Design Considerations</h2>
+            <section class="site-section">
+                <h3 class="english-sans">Vowel Characters</h3>
+                <h4 class="dn-dravida">ऐॅ (ैॅ)</h4>
+                <p class="english-serif">A few designs were considered for this vowel, but the present one was chosen for its intuitiveness and ease of implementation. Just as hrasva <span class="dn-dravida">े</span> is <span class="dn-dravida">ॆ</span>, hrasva <span class="dn-dravida">ै</span> can be <span class="dn-dravida">ैॅ</span>. Implementation in the font was simple, as Professor Girish Dalvi had already provided the mātrā glyph in Shobhika, untied to any encoding. All that needed to be done was making the full vowel <span class="dn-dravida">ऐॅ</span> and connecting both the mātrā and the full vowel to their respective Unicode sequences.</p>
+                <h4 class="dn-dravida">ஃ</h4>
+                <p class="english-serif">The character for āytam was made by adjusting the Tamiḻ character to fit a Dēvanāgarī style. It was implemented by adding an extra point to the existing visarga character and arranging the three points into a triangle. As there is no Unicode code point for āytam in the Dēvanāgarī block, the character uses the code point of the original Tamiḻ āytam.</p>
+                <h3 class="english-sans">Consonant Characters</h3>
+                <h4 class="dn-dravida">त़</h4>
+                <p class="english-serif">The design of <span class="dn-dravida">त़</span> is inspired by the Malayalam letter <span class="malayalam">റ</span>. A small vertical stroke is added to connect it to the śirorekhā and stylistically blend with Dēvanāgarī.</p>
+                <h4 class="dn-dravida">द़</h4>
+                <p class="english-serif">The original design was a <span class="dn-dravida">ठ</span> with the right of the main loop opened and looped like <span class="dn-dravida">द</span>, with a diagonal crossbar added. This proved to be too grotesque and complex. A simpler version based on the Telugu <span class="telugu">ౚ</span> was then designed by adding a horizontal crossbar and a small vertical mark to <span class="dn-dravida">ठ</span>. On further consideration of simplicity, the vertical mark was removed, leaving the current design of <span class="dn-dravida">द़</span>.</p>
+                <h4 class="dn-dravida">ऩ</h4>
+                <p class="english-serif">The main requirement for this character was that it should be similar enough to <span class="dn-dravida">न</span> that someone unaware of its existence would read it as <span class="dn-dravida">न</span>, yet distinct enough that it can be easily disambiguated by those familiar with it. The initial idea, proposed by Vighnesh Mishra, was to extend the loop of <span class="dn-dravida">न</span> slightly upward halfway to the śirorekhā, creating a character halfway between <span class="dn-dravida">न</span> and <span class="dn-dravida">म</span>. This shape proved too difficult to distinguish from either <span class="dn-dravida">न</span> or <span class="dn-dravida">म</span>. It was then modified by bending the extension to the right. But this too was found to be difficult to tell apart. At the suggestion of Aniket Ganesh, the extension was instead bent to the left. It cannot extend all the way to the baseline as it must remain distinct from <span class="dn-dravida">ल</span>, so it terminates in line with the bottom of the original loop.</p>
+                <h4 class="dn-dravida">ऱ</h4>
+                <p class="english-serif">This new letterform was created simply by adding a vertical stroke to the already existing half-form <span class="dn-dravida">ऱ्‍</span>. This design was proposed by the Twitter user @pathaspati.</p>
+                <h4 class="dn-dravida">ऴ</h4>
+                <p class="english-serif">The original design selected for this was essentially <span class="dn-dravida">प</span> with the connection to the śirorekhā at the top-right replaced by a loop connecting <span class="dn-dravida">प्‍</span> to the lower half of the vertical stroke. This design was problematic as it connected to the śirorekhā on the left side of the letter, which is atypical in Dēvanāgarī. This caused mātrā-s like <span class="dn-dravida">े</span> and <span class="dn-dravida">ै</span> to hang awkwardly off the left of the consonant. Fortunately, Brahmashri Shriramana Sharma had already designed a character for <span class="tamil-sans">ழ</span> without these issues. This letterform was adopted and is the one used at present.</p>
+                <h4 class="dn-dravida">श़</h4>
+                <p class="english-serif">As this character represents an ambiguous pronunciation between <span class="dn-dravida">स</span> and <span class="dn-dravida">श</span>, it was designed by adding the horizontal stroke from <span class="dn-dravida">स</span> into <span class="dn-dravida">श</span>. As with <span class="dn-dravida">ऩ</span>, this allows those unfamiliar with the new letters to read it smoothly as <span class="dn-dravida">श</span>, while those familiar can recognize it and read it as <span class="dn-dravida">स</span>/<span class="dn-dravida">श</span>.</p>
+            </section>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('click', function(e) {
+            const header = document.querySelector('.site-header');
+            if (!header.contains(e.target) && header.classList.contains('menu-open')) {
+                header.classList.remove('menu-open');
+            }
+        });
+    </script>
+</body>
+</html>

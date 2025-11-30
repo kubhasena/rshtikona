@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Library – Dēvanāgarī Drāviḍā</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="PDF Library – Dēvanāgarī Drāviḍā">
+    <meta property="og:description" content="View and download project PDFs for the Dēvanāgarī Drāviḍā module.">
+    <meta property="og:image" content="https://yourdomain.com/assets/images/pdf-og.jpg">
+    <meta property="og:url" content="https://yourdomain.com/devanagari-dravida/downloads.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PDF Library – Dēvanāgarī Drāviḍā">
+    <meta name="twitter:description" content="View and download project PDFs for the Dēvanāgarī Drāviḍā module.">
+    <meta name="twitter:image" content="https://yourdomain.com/assets/images/pdf-og.jpg">
+    <style>
+        .pdf-viewer {
+            width: 100%;
+            min-height: 600px;
+            border: 1.5px solid var(--color-gold);
+            border-radius: 10px;
+            margin-bottom: 2.5rem;
+            background: #fff;
+        }
+        .pdf-download {
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--color-crimson);
+            background: transparent;
+            border: 2px solid var(--color-crimson);
+            padding: 0.5em 1.2em;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .pdf-download:hover {
+            background: var(--color-crimson);
+            color: var(--color-gold);
+        }
+        .font-download {
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--color-crimson);
+            background: transparent;
+            border: 2px solid var(--color-crimson);
+            padding: 0.5em 1.2em;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .font-download:hover {
+            background: var(--color-crimson);
+            color: var(--color-gold);
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header__topline"></div>
+        <h1 class="site-header__title">Dēvanāgarī Drāviḍā</h1>
+        <button class="menu-toggle" aria-label="Open menu" onclick="document.querySelector('.site-header').classList.toggle('menu-open')">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="../index.html">Main Home</a>
+            <a href="index.html">Main Article</a>
+            <a href="glyphdesign.html">Glyph Design</a>
+            <a href="shobhikadravida.html">Shobhika Drāviḍā</a>
+        </div>
+    </header>
+    <div class="site-container">
+        <main class="site-main">
+            <h2 class="site-section__title module-title english-sans" style="font-size:2.1em; font-weight:800; margin-bottom:1.2em; text-align:center; letter-spacing:0.01em;">Downloads</h2>
+            <section class="site-section">
+                <h3 class="english-sans" id="font">Download the Shobhika Dravida Font</h3>
+                <a class="font-download" href="Shobhika-Dravida.otf" download>Download Shobhika-Dravida.otf</a>
+                <h3 class="english-sans" id="examples">Example Texts</h3>
+                <iframe class="pdf-viewer" src="https://docs.google.com/gview?url=https://kubhasena.github.io/pages/devanagari-dravida/Examples.pdf&embedded=true" title="Examples PDF" allowfullscreen loading="lazy">
+                    <p>Your browser does not support embedded PDFs. <a href="https://kubhasena.github.io/pages/devanagari-dravida/Examples.pdf" target="_blank" rel="noopener">Click here to view the PDF.</a></p>
+                </iframe>
+                <h3 class="english-sans" id="newletters">New Letters and Encodings</h3>
+                <iframe class="pdf-viewer" src="https://docs.google.com/gview?url=https://kubhasena.github.io/pages/devanagari-dravida/NewLetters.pdf&embedded=true" title="New Letters PDF" allowfullscreen loading="lazy">
+                    <p>Your browser does not support embedded PDFs. <a href="https://kubhasena.github.io/pages/devanagari-dravida/NewLetters.pdf" target="_blank" rel="noopener">Click here to view the PDF.</a></p>
+                </iframe>
+            </section>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('click', function(e) {
+            const header = document.querySelector('.site-header');
+            if (!header.contains(e.target) && header.classList.contains('menu-open')) {
+                header.classList.remove('menu-open');
+            }
+        });
+    </script>
+</body>
+</html>
