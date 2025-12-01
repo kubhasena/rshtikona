@@ -276,51 +276,65 @@ a:hover, a:focus {
     border-radius: 2px;
 }
 @media (max-width: 900px) {
+  html, body {
+    width: 100vw;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
   .site-header, .site-container {
     max-width: 100vw;
     width: 100vw;
+    min-width: 0;
+    margin: 0;
     border-radius: 0;
     box-sizing: border-box;
-    margin-left: 0;
-    margin-right: 0;
   }
   main, .site-main {
     max-width: 100vw;
     width: 100vw;
+    min-width: 0;
+    margin: 0;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     border-radius: 0 0 12px 12px;
+    box-sizing: border-box;
   }
   .site-section {
     padding-left: 0;
     padding-right: 0;
   }
-  body {
-    overflow-x: hidden;
-  }
 }
 @media (max-width: 600px) {
+  html, body {
+    width: 100vw;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
   .site-header, .site-container {
     max-width: 100vw;
     width: 100vw;
+    min-width: 0;
+    margin: 0;
     border-radius: 0;
     box-sizing: border-box;
-    margin-left: 0;
-    margin-right: 0;
   }
   main, .site-main {
     max-width: 100vw;
     width: 100vw;
+    min-width: 0;
+    margin: 0;
     padding-left: 0.25rem;
     padding-right: 0.25rem;
     border-radius: 0 0 8px 8px;
+    box-sizing: border-box;
   }
   .site-section {
     padding-left: 0;
     padding-right: 0;
-  }
-  body {
-    overflow-x: hidden;
   }
 }
 .site-main {
