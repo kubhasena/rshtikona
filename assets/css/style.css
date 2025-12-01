@@ -275,6 +275,41 @@ a:hover, a:focus {
     background: rgba(172, 150, 78, 0.08);
     border-radius: 2px;
 }
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 2rem;
+    scrollbar-width: none; /* Firefox */
+}
+.table-responsive::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.table-responsive table {
+  min-width: 600px;
+  width: max-content;
+  border-collapse: collapse;
+}
+
+.table-responsive th, .table-responsive td {
+  padding: 0.5em 1em;
+  text-align: left;
+  border-bottom: 1px solid #d6c9a2;
+}
+
+@media (max-width: 700px) {
+  .table-responsive table {
+    min-width: 400px;
+    font-size: 0.98em;
+  }
+}
+@media (max-width: 500px) {
+  .table-responsive table {
+    min-width: 320px;
+    font-size: 0.93em;
+  }
+}
 @media (max-width: 900px) {
   html, body {
     width: 100vw;
