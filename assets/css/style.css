@@ -275,15 +275,53 @@ a:hover, a:focus {
     background: rgba(172, 150, 78, 0.08);
     border-radius: 2px;
 }
+@media (max-width: 900px) {
+  .site-header, .site-container {
+    max-width: 100vw;
+    width: 100vw;
+    border-radius: 0;
+    box-sizing: border-box;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  main, .site-main {
+    max-width: 100vw;
+    width: 100vw;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 0 0 12px 12px;
+  }
+  .site-section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  body {
+    overflow-x: hidden;
+  }
+}
 @media (max-width: 600px) {
-    .menu-toggle {
-        top: 1rem;
-        right: 1rem;
-    }
-    .dropdown-menu {
-        top: 3.5rem;
-        right: 1rem;
-    }
+  .site-header, .site-container {
+    max-width: 100vw;
+    width: 100vw;
+    border-radius: 0;
+    box-sizing: border-box;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  main, .site-main {
+    max-width: 100vw;
+    width: 100vw;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    border-radius: 0 0 8px 8px;
+  }
+  .site-section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  body {
+    overflow-x: hidden;
+  }
 }
 .site-main {
     flex: 1 0 auto;

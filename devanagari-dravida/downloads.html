@@ -57,12 +57,23 @@
             background: var(--color-crimson);
             color: var(--color-gold);
         }
+        .site-header__title-link {
+            text-decoration: none !important;
+            border-bottom: none !important;
+        }
+        .site-header__title-link:hover {
+            text-decoration: none !important;
+            border-bottom: none !important;
+            color: inherit !important;
+            background: none !important;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <header class="site-header">
         <div class="site-header__topline"></div>
-        <h1 class="site-header__title">Dēvanāgarī Drāviḍā</h1>
+        <a href="index.html" class="site-header__title-link" style="text-decoration:none; border-bottom:none;"><h1 class="site-header__title">Devanagari Dravida</h1></a>
         <button class="menu-toggle" aria-label="Open menu" onclick="document.querySelector('.site-header').classList.toggle('menu-open')">
             <span class="bar"></span>
             <span class="bar"></span>
