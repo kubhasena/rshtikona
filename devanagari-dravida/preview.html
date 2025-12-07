@@ -128,10 +128,17 @@
       <h2 class="site-section__title module-title english-sans" style="font-size:2em; font-weight:800; margin-bottom:1.2em; text-align:center; letter-spacing:0.01em;">Devanāgarī Drāviḍā Letter Preview</h2>
       <section class="site-section preview-container">
         <div class="input-area">
-          <label for="inputText" style="color:var(--color-crimson); font-weight:500;">Enter text:</label>
-          <textarea id="inputText" class="dn-dravida" placeholder="Tap to use the Devanagari keyboard..." autocomplete="off" autocorrect="off" spellcheck="false" readonly></textarea>
+          <label for="inputText" style="color:var(--color-crimson); font-weight:500;">Type or use the virtual keyboard:</label>
+          <textarea id="inputText" placeholder="Type here using the virtual keyboarrd..."></textarea>
         </div>
-        <div id="vk-devanagari" class="vk-keyboard dn-dravida" aria-label="Devanagari Virtual Keyboard"></div>
+        <div style="display:flex; justify-content:center; gap:0.7em; margin-bottom:1em; flex-wrap:wrap;">
+          <button class="vk-toggle-btn" id="showDeva" type="button">Devanagari Keyboard</button>
+          <button class="vk-toggle-btn" id="showTamil" type="button">Tamil Keyboard</button>
+          <button class="vk-toggle-btn" id="hideVK" type="button">Hide Keyboard</button>
+        </div>
+        <div class="keyboard-label" id="vk-label" style="display:none"></div>
+        <div class="keyboard-row" id="vk-devanagari" style="display:none"></div>
+        <div class="keyboard-row" id="vk-tamil" style="display:none"></div>
       </section>
     </main>
   </div>

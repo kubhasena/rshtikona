@@ -1,236 +1,301 @@
-// Devanagari Virtual Keyboard (Best Practices)
-// Only virtual keyboard input, cursor movement allowed, matra logic, dn-dravida font
+// Devanagari Dravida Virtual Keyboard Logic
 
-const LAYOUT = [
+// Define independent vowels and their matra forms (move to top for correct event handler setup)
+const vowelKeys = ['अ','आ','इ','ई','उ','ॶ','ऊ','ऋ','ऌ'];
+const vowelMatras = ['्','ा','ि','ी','ु','ॖ','ू','ृ','ॢ'];
+const vowelRow2 = ['ऎ','ए','ऒ','ओ','ऐ','ऐॅ','औ'];
+const vowelMatras2 = ['ॆ','े','ॊ','ो','ै','ॅ','ौ'];
+
+let mapping = {};
+fetch('mapping.json')
+  .then(response => response.json())
+  .then(json => mapping = json);
+
+const inputText = document.getElementById('inputText');
+const vkDevanagari = document.getElementById('vk-devanagari');
+const vkTamil = document.getElementById('vk-tamil');
+const vkLabel = document.getElementById('vk-label');
+const showDevaBtn = document.getElementById('showDeva');
+const showTamilBtn = document.getElementById('showTamil');
+const hideVKBtn = document.getElementById('hideVK');
+
+function transliterate(text) {
+  let result = text;
+  for (const [key, value] of Object.entries(mapping)) {
+    const regex = new RegExp(key, 'g');
+    result = result.replace(regex, value);
+  }
+  return result;
+}
+
+inputText.addEventListener('input', function() {
+  previewText.textContent = transliterate(inputText.value);
+});
+
+// Virtual Keyboard - Devanagari (custom layout)
+const devanagariRows = [
   ['अ','आ','इ','ई','उ','ॶ','ऊ','ऋ','ऌ','ऽ'],
   ['ऎ','ए','ऒ','ओ','ऐ','ऐॅ','औ','ं','ः','ஃ'],
   ['क','ख','ग','घ','ङ','च','छ','ज','झ','ञ'],
   ['ट','ठ','ड','ढ','ण','त़','श़','द़','ऱ','ऩ'],
   ['त','थ','द','ध','न','प','फ','ब','भ','म'],
   ['य','र','ल','व','श','ष','स','ह','ऴ','ळ'],
-  ['।', '॥', ' ', '<', '↵']
+  [',', '।', '॥', ' ', '<', '↵']
 ];
-const VOWELS = ['अ','आ','इ','ई','उ','ॶ','ऊ','ऋ','ऌ'];
-const MATRAS = ['्','ा','ि','ी','ु','ॖ','ू','ृ','ॢ'];
-const VOWELS2 = ['ऎ','ए','ऒ','ओ','ऐ','ऐॅ','औ'];
-const MATRAS2 = ['ॆ','े','ॊ','ो','ै','ॅ','ौ'];
-const ALT_LAYOUT = [
-  ['१','२','३','४','५','६','७','८','९','०'],
-  ['।','॥','-','—','(',')','[',']','{','}'],
-  ['॰','%','@','#','&','*','/','\\','+','=','‚'], // added comma here (as '‚' for visual distinction, or use ',' if you want plain)
-  ['॑','॒','॓','॔','ॕ','ॖ','ॗ','ॢ','ॣ','ॱ'], // Example Vedic svaras and marks
-  ['←',''] // ← to return to main keyboard
-];
+// Keyboard layout constants
+const KEY_UNIT = 2.8; // em
+const GAP_UNIT = 0.3; // em
+const ROW_UNITS = (10 * KEY_UNIT + 9 * GAP_UNIT) / KEY_UNIT + 1; // 15 key units per row
+const LAST_ROW_LAYOUT = [1, 1, 1, 4, 1.5, 1.5]; // 5 singles, space(5), backspace(2), enter(2), comma(1)
 
-let showingAlt = false;
+const ROW_WIDTH = 10 * 2.8 + 5 * 2.8; // 10 normal + spacebar (5 wide) + 2 backspace/enter (2 wide each) = 15 keys wide
+vkDevanagari.innerHTML = '';
 
-const textarea = document.getElementById('inputText');
-const keyboard = document.getElementById('vk-devanagari');
+devanagariRows.forEach((row, idx) => {
+  const rowDiv = document.createElement('div');
+  rowDiv.style.display = 'flex';
+  rowDiv.style.justifyContent = 'center';
+  rowDiv.style.gap = GAP_UNIT + 'em';
+  rowDiv.style.margin = '0 auto';
 
-// Utility: Detect mobile device
-function isMobile() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
+  // Calculate total width units for the row
+  let keyWidths = [];
+  if (idx === devanagariRows.length - 1) {
+    // Last row: [',', '।', '॥', ' ', '<', '↵']
+    keyWidths = [1, 1, 1, 4, 1.5, 1.5];
+  } else {
+    keyWidths = Array(row.length).fill(1);
+  }
+  const totalUnits = keyWidths.reduce((a, b) => a + b, 0);
+  rowDiv.style.width = `calc(${totalUnits} * ${KEY_UNIT}em + ${(row.length - 1)} * ${GAP_UNIT}em + 3em)`;
 
-// On mobile: always show keyboard, set textarea to readonly, allow tap-to-move-cursor
-if (isMobile()) {
-  textarea.readOnly = true;
-  keyboard.style.display = 'block';
-  // Allow tap to move cursor by toggling readonly off briefly
-  textarea.addEventListener('touchend', function(e) {
-    const wasReadOnly = textarea.readOnly;
-    textarea.readOnly = false;
-    setTimeout(() => {
-      textarea.readOnly = wasReadOnly;
-    }, 100);
+  row.forEach((key, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'vk-btn dn-dravida';
+    btn.style.fontFamily = 'dn-dravida, serif';
+    let widthUnits = keyWidths[i] || 1;
+    btn.style.flex = `0 0 ${widthUnits * KEY_UNIT + (widthUnits - 1) * GAP_UNIT}em`;
+    btn.style.width = `${widthUnits * KEY_UNIT + (widthUnits - 1) * GAP_UNIT}em`;
+
+    if (idx === 0 && i < vowelKeys.length) {
+      // First row vowels
+      btn.onclick = () => {
+        const pos = getCursorPos(inputText);
+        const val = inputText.value;
+        const prev = pos > 0 ? val[pos-1] : '';
+        const useMatra = isConsonant(prev);
+        handleDevanagariKeyInput(key, i, useMatra, false);
+      };
+    } else if (idx === 1 && i < vowelRow2.length) {
+      // Second row vowels
+      btn.onclick = () => {
+        const pos = getCursorPos(inputText);
+        const val = inputText.value;
+        const prev = pos > 0 ? val[pos-1] : '';
+        const useMatra = isConsonant(prev);
+        handleDevanagariKeyInput(key, i, useMatra, true);
+      };
+    } else if (idx === devanagariRows.length - 1) {
+      // Last row: assign special labels
+      btn.textContent = key === ' ' ? '␣' : key === '<' ? '⌫' : key === '↵' ? '↵' : key;
+      btn.title = key === ' ' ? 'Space' : key === '<' ? 'Backspace' : key === '↵' ? 'Enter' : '';
+      btn.onclick = () => {
+        window._vk_updating = true;
+        if (key === '<') {
+          // Backspace at cursor position, handle nukta
+          const start = inputText.selectionStart;
+          const end = inputText.selectionEnd;
+          let val = inputText.value;
+          if (start > 0) {
+            // If previous char is nukta, remove nukta and preceding char
+            if (val[start - 1] === '़' && start > 1) {
+              inputText.value = val.slice(0, start - 2) + val.slice(end);
+              inputText.selectionStart = inputText.selectionEnd = start - 2;
+            } else {
+              inputText.value = val.slice(0, start - 1) + val.slice(end);
+              inputText.selectionStart = inputText.selectionEnd = start - 1;
+            }
+          }
+        } else if (key === '↵') {
+          // Insert newline at cursor
+          const start = inputText.selectionStart;
+          const end = inputText.selectionEnd;
+          let val = inputText.value;
+          inputText.value = val.slice(0, start) + '\n' + val.slice(end);
+          inputText.selectionStart = inputText.selectionEnd = start + 1;
+        } else if (key === ' ') {
+          // Insert space at cursor
+          const start = inputText.selectionStart;
+          const end = inputText.selectionEnd;
+          let val = inputText.value;
+          inputText.value = val.slice(0, start) + ' ' + val.slice(end);
+          inputText.selectionStart = inputText.selectionEnd = start + 1;
+        } else {
+          // Insert key at cursor
+          const start = inputText.selectionStart;
+          const end = inputText.selectionEnd;
+          let val = inputText.value;
+          inputText.value = val.slice(0, start) + key + val.slice(end);
+          // Place cursor just after inserted character(s)
+          inputText.selectionStart = inputText.selectionEnd = start + key.length;
+        }
+        inputText.dispatchEvent(new Event('input'));
+        window._vk_updating = false;
+      };
+    } else {
+      btn.textContent = key;
+      btn.onclick = () => {
+        inputText.value = insertAtCursor(inputText, key);
+        inputText.dispatchEvent(new Event('input'));
+      };
+    }
+    rowDiv.appendChild(btn);
   });
-} else {
-  textarea.readOnly = false;
-  // Show/hide keyboard on focus/blur as before
-  textarea.addEventListener('focus', () => {
-    keyboard.style.display = 'block';
-    updateVowelKeys();
-  });
-  textarea.addEventListener('blur', () => {
-    setTimeout(() => { keyboard.style.display = 'none'; }, 100);
-  });
-}
-// Always prevent blur when clicking keyboard
-keyboard.addEventListener('mousedown', e => {
-  e.preventDefault();
+  vkDevanagari.appendChild(rowDiv);
 });
 
-// Remove previous event blocks
-// Only set textarea.readOnly on mobile to prevent default keyboard
-if (isMobile()) {
-  textarea.readOnly = true;
-} else {
-  textarea.readOnly = false;
+// Virtual Keyboard - Tamil (basic set)
+const tamilKeys = ['அ','ஆ','இ','ஈ','உ','ஊ','எ','ஏ','ஐ','ஒ','ஓ','ஔ','க','ங','ச','ஞ','ட','ண','த','ந','ப','ம','ய','ர','ல','வ','ழ','ள','ற','ன','ஷ','ஸ','ஹ'];
+tamilKeys.forEach(key => {
+  const btn = document.createElement('button');
+  btn.className = 'vk-btn';
+  btn.textContent = key;
+  btn.onclick = () => {
+    inputText.value += key;
+    inputText.dispatchEvent(new Event('input'));
+  };
+  vkTamil.appendChild(btn);
+});
+
+// Keyboard toggle logic
+function showKeyboard(type) {
+  vkDevanagari.style.display = 'none';
+  vkTamil.style.display = 'none';
+  vkLabel.style.display = 'none';
+  showDevaBtn.classList.remove('active');
+  showTamilBtn.classList.remove('active');
+  hideVKBtn.classList.remove('active');
+  if (type === 'devanagari') {
+    vkDevanagari.style.display = 'flex';
+    vkLabel.textContent = 'Devanagari Virtual Keyboard';
+    vkLabel.style.display = 'block';
+    showDevaBtn.classList.add('active');
+  } else if (type === 'tamil') {
+    vkTamil.style.display = 'flex';
+    vkLabel.textContent = 'Tamil Virtual Keyboard';
+    vkLabel.style.display = 'block';
+    showTamilBtn.classList.add('active');
+  } else {
+    // Hide all
+    hideVKBtn.classList.add('active');
+  }
+}
+showDevaBtn.addEventListener('click', () => showKeyboard('devanagari'));
+showTamilBtn.addEventListener('click', () => showKeyboard('tamil'));
+hideVKBtn.addEventListener('click', () => showKeyboard('none'));
+
+// On mobile, show keyboard as default and style larger
+function isMobile() {
+  return window.innerWidth <= 700;
+}
+window.addEventListener('DOMContentLoaded', () => {
+  if (isMobile()) {
+    showKeyboard('devanagari');
+  } else {
+    showKeyboard('none');
+  }
+});
+
+function autoResizeAndFont() {
+  // Auto-expand vertically
+  inputText.style.height = 'auto';
+  inputText.style.height = inputText.scrollHeight + 'px';
+  // Shrink font size if text is too wide
+  inputText.classList.remove('shrink-font', 'shrink-font-more', 'shrink-font-min');
+  if (inputText.scrollWidth > inputText.clientWidth * 1.05) {
+    inputText.classList.add('shrink-font');
+  }
+  if (inputText.scrollWidth > inputText.clientWidth * 1.25) {
+    inputText.classList.remove('shrink-font');
+    inputText.classList.add('shrink-font-more');
+  }
+  if (inputText.scrollWidth > inputText.clientWidth * 1.5) {
+    inputText.classList.remove('shrink-font-more');
+    inputText.classList.add('shrink-font-min');
+  }
 }
 
-// Remove these lines if present:
-// textarea.addEventListener('keydown', e => e.preventDefault());
-// textarea.addEventListener('paste', e => e.preventDefault());
 
+
+// Helper: is Devanagari consonant
 function isConsonant(ch) {
-  return /[क-हक़-य़ऱऴऩ़]/.test(ch);
+  // Basic Devanagari consonant range + nukta/extra + plain nukta
+  return /[क-हक़-य़ऱऴऩ़]/.test(ch);
 }
 
-function updateVowelKeys() {
-  const pos = textarea.selectionStart;
-  const val = textarea.value;
+function getCursorPos(textarea) {
+  return textarea.selectionStart;
+}
+
+function updateDevanagariKeyboard() {
+  // Determine if prior char is consonant
+  const pos = getCursorPos(inputText);
+  const val = inputText.value;
   const prev = pos > 0 ? val[pos-1] : '';
   const useMatra = isConsonant(prev);
+  // Rebuild first two rows
+  const rows = Array.from(vkDevanagari.children);
+  if (rows.length < 2) return;
   // Row 1
-  LAYOUT[0].forEach((key, i) => {
-    const btn = keyboard.querySelector(`[data-key="${key}"]`);
-    if (btn && i < VOWELS.length) {
-      btn.textContent = useMatra ? MATRAS[i] : VOWELS[i];
-      btn.setAttribute('data-matra', useMatra ? '1' : '0');
+  Array.from(rows[0].children).forEach((btn, i) => {
+    if (i < vowelKeys.length) {
+      btn.textContent = useMatra ? vowelMatras[i] : vowelKeys[i];
+      btn.title = useMatra ? 'Matra' : 'Vowel';
     }
   });
   // Row 2
-  LAYOUT[1].forEach((key, i) => {
-    const btn = keyboard.querySelector(`[data-key="${key}"]`);
-    if (btn && i < VOWELS2.length) {
-      btn.textContent = useMatra ? MATRAS2[i] : VOWELS2[i];
-      btn.setAttribute('data-matra', useMatra ? '1' : '0');
+  Array.from(rows[1].children).forEach((btn, i) => {
+    if (i < vowelRow2.length) {
+      btn.textContent = useMatra ? vowelMatras2[i] : vowelRow2[i];
+      btn.title = useMatra ? 'Matra' : 'Vowel';
     }
   });
 }
 
-function insertAtCursor(text) {
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
-  const val = textarea.value;
-  textarea.value = val.slice(0, start) + text + val.slice(end);
-  textarea.selectionStart = textarea.selectionEnd = start + text.length;
-  textarea.focus();
-  updateVowelKeys();
-}
-
-function handleBackspace() {
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
-  if (start === 0 && end === 0) return;
-  let val = textarea.value;
-  if (start > 0 && val[start-1] === '़' && start > 1) {
-    textarea.value = val.slice(0, start-2) + val.slice(end);
-    textarea.selectionStart = textarea.selectionEnd = start-2;
-  } else if (start > 0) {
-    textarea.value = val.slice(0, start-1) + val.slice(end);
-    textarea.selectionStart = textarea.selectionEnd = start-1;
-  }
-  textarea.focus();
-  updateVowelKeys();
-}
-
-function handleKeyClick(key, row, idx) {
-  // Vowel/matra logic
-  if (row === 0 && idx < VOWELS.length) {
-    const pos = textarea.selectionStart;
-    const val = textarea.value;
-    const prev = pos > 0 ? val[pos-1] : '';
-    if (isConsonant(prev)) {
-      insertAtCursor(MATRAS[idx]);
-      return;
+function handleDevanagariKeyInput(key, i, useMatra, isRow2) {
+  if (useMatra) {
+    // Insert matra
+    if (!isRow2) {
+      inputText.value = insertAtCursor(inputText, vowelMatras[i]);
     } else {
-      insertAtCursor(VOWELS[idx]);
-      return;
+      inputText.value = insertAtCursor(inputText, vowelMatras2[i]);
     }
-  }
-  if (row === 1 && idx < VOWELS2.length) {
-    const pos = textarea.selectionStart;
-    const val = textarea.value;
-    const prev = pos > 0 ? val[pos-1] : '';
-    if (isConsonant(prev)) {
-      insertAtCursor(MATRAS2[idx]);
-      return;
-    } else {
-      insertAtCursor(VOWELS2[idx]);
-      return;
-    }
-  }
-  // Special keys
-  if (key === '<') {
-    handleBackspace();
-    return;
-  }
-  if (key === '↵') {
-    insertAtCursor('\n');
-    return;
-  }
-  if (key === ' ') {
-    insertAtCursor(' ');
-    return;
-  }
-  // Default: insert key
-  insertAtCursor(key);
-}
-
-function buildKeyboard() {
-  keyboard.innerHTML = '';
-  if (!showingAlt) {
-    LAYOUT.forEach((row, rowIdx) => {
-      const rowDiv = document.createElement('div');
-      rowDiv.className = 'vk-row';
-      // For last row, add extra key at the start
-      if (rowIdx === LAYOUT.length - 1) {
-        const altBtn = document.createElement('button');
-        altBtn.type = 'button';
-        altBtn.className = 'vk-btn dn-dravida';
-        altBtn.setAttribute('data-key', 'alt');
-        altBtn.textContent = '१२३';
-        altBtn.title = 'More (numbers, punctuation, svaras)';
-        altBtn.onclick = () => {
-          showingAlt = true;
-          buildKeyboard();
-        };
-        rowDiv.appendChild(altBtn);
-      }
-      row.forEach((key, keyIdx) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'vk-btn dn-dravida';
-        btn.setAttribute('data-key', key);
-        btn.textContent = key;
-        btn.onclick = () => handleKeyClick(key, rowIdx, keyIdx);
-        rowDiv.appendChild(btn);
-      });
-      keyboard.appendChild(rowDiv);
-    });
   } else {
-    ALT_LAYOUT.forEach((row, rowIdx) => {
-      const rowDiv = document.createElement('div');
-      rowDiv.className = 'vk-row';
-      row.forEach((key, keyIdx) => {
-        if (rowIdx === ALT_LAYOUT.length - 1 && key === '←') {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'vk-btn dn-dravida';
-          btn.setAttribute('data-key', 'main');
-          btn.textContent = '←';
-          btn.title = 'Back to Devanagari';
-          btn.onclick = () => {
-            showingAlt = false;
-            buildKeyboard();
-          };
-          rowDiv.appendChild(btn);
-        } else if (key) {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'vk-btn dn-dravida';
-          btn.setAttribute('data-key', key);
-          btn.textContent = key;
-          btn.onclick = () => insertAtCursor(key);
-          rowDiv.appendChild(btn);
-        }
-      });
-      keyboard.appendChild(rowDiv);
-    });
+    // Insert full vowel
+    if (!isRow2) {
+      inputText.value = insertAtCursor(inputText, vowelKeys[i]);
+    } else {
+      inputText.value = insertAtCursor(inputText, vowelRow2[i]);
+    }
   }
+  inputText.dispatchEvent(new Event('input'));
 }
 
-// Initial build
-buildKeyboard();
-updateVowelKeys();
+function insertAtCursor(textarea, text) {
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const value = textarea.value;
+  return value.slice(0, start) + text + value.slice(end);
+}
+
+// Prevent user-typed input, allow only virtual keyboard
+inputText.addEventListener('keydown', function(e) {
+  e.preventDefault();
+});
+inputText.addEventListener('input', function(e) {
+  autoResizeAndFont();
+  updateDevanagariKeyboard();
+});
+inputText.addEventListener('click', updateDevanagariKeyboard);
+inputText.addEventListener('keyup', updateDevanagariKeyboard);
+window.addEventListener('DOMContentLoaded', updateDevanagariKeyboard);

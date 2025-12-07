@@ -1,0 +1,99 @@
+@font-face {
+  font-family: 'dn-dravida';
+  src: url('../assets/fonts/dn-dravida.woff2') format('woff2'),
+       url('../assets/fonts/dn-dravida.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+body, .vk-main {
+  font-family: 'dn-dravida', serif;
+  background: #f8f6f2;
+  margin: 0;
+  padding: 0;
+}
+.vk-title {
+  text-align: center;
+  color: #a52a2a;
+  font-size: 2em;
+  margin: 1.2em 0 0.7em 0;
+}
+.vk-input-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.2em;
+}
+/* Hide native caret */
+#vk-input {
+  width: 95%;
+  max-width: 600px;
+  min-height: 60px;
+  font-size: 1.5em;
+  border-radius: 8px;
+  border: 2px solid #d4af37;
+  padding: 0.7em;
+  background: #fffbe9;
+  color: #a52a2a;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  font-family: 'dn-dravida', serif;
+  caret-color: transparent;
+  position: relative;
+  z-index: 1;
+}
+.vk-caret {
+  position: absolute;
+  background: #111;
+  width: 2px;
+  height: 1.2em;
+  animation: vk-blink 1s steps(1) infinite;
+  z-index: 2;
+}
+@keyframes vk-blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.vk-keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4em;
+  margin-bottom: 2em;
+}
+.vk-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.3em;
+  margin-bottom: 0.2em;
+}
+.vk-btn {
+  font-family: 'dn-dravida', serif;
+  font-size: 1.2em;
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  border: 2px solid #d4af37;
+  background: #fffbe9;
+  color: #a52a2a;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  min-width: 2.8em;
+  text-align: center;
+  user-select: none;
+}
+.vk-btn:active, .vk-btn:focus {
+  background: #d4af37;
+  color: #fffbe9;
+  outline: none;
+}
+@media (max-width: 700px) {
+  #vk-input {
+    font-size: 1.2em;
+    min-height: 48px;
+  }
+  .vk-btn {
+    font-size: 1.1em;
+    padding: 0.6em 1.2em;
+    border-radius: 12px;
+  }
+}
