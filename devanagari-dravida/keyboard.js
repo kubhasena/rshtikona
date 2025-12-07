@@ -32,6 +32,34 @@ function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
+// On mobile: always show keyboard, set textarea to readonly, allow tap-to-move-cursor
+if (isMobile()) {
+  textarea.readOnly = true;
+  keyboard.style.display = 'block';
+  // Allow tap to move cursor by toggling readonly off briefly
+  textarea.addEventListener('touchend', function(e) {
+    const wasReadOnly = textarea.readOnly;
+    textarea.readOnly = false;
+    setTimeout(() => {
+      textarea.readOnly = wasReadOnly;
+    }, 100);
+  });
+} else {
+  textarea.readOnly = false;
+  // Show/hide keyboard on focus/blur as before
+  textarea.addEventListener('focus', () => {
+    keyboard.style.display = 'block';
+    updateVowelKeys();
+  });
+  textarea.addEventListener('blur', () => {
+    setTimeout(() => { keyboard.style.display = 'none'; }, 100);
+  });
+}
+// Always prevent blur when clicking keyboard
+keyboard.addEventListener('mousedown', e => {
+  e.preventDefault();
+});
+
 // Remove previous event blocks
 // Only set textarea.readOnly on mobile to prevent default keyboard
 if (isMobile()) {
@@ -202,22 +230,6 @@ function buildKeyboard() {
     });
   }
 }
-
-// Show keyboard on focus, hide on blur (optional: always show on mobile)
-textarea.addEventListener('focus', () => {
-  keyboard.style.display = 'block';
-  updateVowelKeys();
-});
-textarea.addEventListener('blur', () => {
-  setTimeout(() => { keyboard.style.display = 'none'; }, 100); // allow click
-});
-keyboard.addEventListener('mousedown', e => {
-  e.preventDefault(); // prevent textarea blur
-});
-
-// Allow cursor movement by mouse
-textarea.addEventListener('click', updateVowelKeys);
-textarea.addEventListener('select', updateVowelKeys);
 
 // Initial build
 buildKeyboard();
