@@ -127,11 +127,5 @@ renderKeyboard();
 // Always keep textarea readonly except for cursor movement
 textarea.readOnly = true;
 
-// Show/hide logic for keyboard
-vkToggle.addEventListener('click', () => {
-  keyboard.style.display = 'flex';
-  textarea.focus();
-});
-textarea.addEventListener('focus', () => {
-  keyboard.style.display = 'flex';
-});
+// Keyboard is always visible
+keyboard.style.display = 'flex';
