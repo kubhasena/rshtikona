@@ -15,8 +15,24 @@ const MATRAS = ['्','ा','ि','ी','ु','ॖ','ू','ृ','ॢ'];
 const VOWELS2 = ['ऎ','ए','ऒ','ओ','ऐ','ऐॅ','औ'];
 const MATRAS2 = ['ॆ','े','ॊ','ो','ै','ॅ','ौ'];
 
+
 const textarea = document.getElementById('vk-textarea');
 const keyboard = document.getElementById('vk-keyboard');
+const vkToggle = document.getElementById('vk-toggle');
+
+// Add close button to keyboard
+function addCloseButton() {
+  let closeBtn = document.createElement('button');
+  closeBtn.className = 'vk-close';
+  closeBtn.type = 'button';
+  closeBtn.innerHTML = '&times;';
+  closeBtn.title = 'Close Keyboard';
+  closeBtn.onclick = () => {
+    keyboard.style.display = 'none';
+    textarea.blur();
+  };
+  keyboard.appendChild(closeBtn);
+}
 
 // Allow cursor movement by mouse/touch
 textarea.addEventListener('mousedown', e => { textarea.readOnly = false; });
@@ -87,8 +103,10 @@ function handleKey(key, row, idx) {
   textarea.focus();
 }
 
+
 function renderKeyboard() {
   keyboard.innerHTML = '';
+  addCloseButton();
   DEVANAGARI_LAYOUT.forEach((row, rowIdx) => {
     const rowDiv = document.createElement('div');
     rowDiv.className = 'vk-row';
@@ -108,3 +126,12 @@ function renderKeyboard() {
 renderKeyboard();
 // Always keep textarea readonly except for cursor movement
 textarea.readOnly = true;
+
+// Show/hide logic for keyboard
+vkToggle.addEventListener('click', () => {
+  keyboard.style.display = 'flex';
+  textarea.focus();
+});
+textarea.addEventListener('focus', () => {
+  keyboard.style.display = 'flex';
+});
