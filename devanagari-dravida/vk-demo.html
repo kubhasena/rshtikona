@@ -33,6 +33,7 @@
       caret-color: var(--color-gold, #bfa14a);
     }
     .vk-keyboard-mobile {
+      overflow-x: auto;
       position: fixed;
       left: 0; right: 0; bottom: 0;
       width: 100vw;
@@ -46,16 +47,20 @@
       gap: 0.2em;
       user-select: none;
       transition: transform 0.2s cubic-bezier(.4,0,.2,1);
+      box-sizing: border-box;
     }
     .vk-row {
       display: flex;
+      flex-wrap: nowrap;
       justify-content: center;
       gap: 0.2em;
       margin-bottom: 0.1em;
+      width: 100%;
+      box-sizing: border-box;
     }
     .vk-btn {
       font-size: 1.35em;
-      padding: 0.6em 1.1em;
+      padding: 0.6em 0.5em;
       border-radius: 10px;
       border: none;
       background: #f3ede2;
@@ -64,12 +69,23 @@
       font-family: 'dn-dravida', serif;
       box-shadow: 0 1px 2px rgba(0,0,0,0.04);
       margin: 0 0.05em;
-      min-width: 2.5em;
-      min-height: 2.5em;
+      min-width: 1.2em;
+      min-height: 2.2em;
+      flex: 1 1 0;
+      flex-shrink: 1;
       text-align: center;
       outline: none;
       user-select: none;
       transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+      box-sizing: border-box;
+      word-break: keep-all;
+    }
+    @media (max-width: 400px) {
+      .vk-btn {
+        font-size: 1em;
+        padding: 0.4em 0.2em;
+        min-width: 0.8em;
+      }
     }
     .vk-btn:active, .vk-btn:focus {
       background: #e6d7b7;
