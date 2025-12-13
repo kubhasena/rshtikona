@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shobhika Dravida Text Preview & PDF Export</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .site-section.preview-section {
+            background: var(--color-offwhite, #f1e5cb);
+            border-radius: 12px;
+            box-shadow: 0 2px 16px #0002;
+            padding: 2.2em 2em 2.5em 2em;
+            margin: 2.5em auto 2em auto;
+            max-width: 600px;
+            width: 100%;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            display: block !important;
+        }
+        .site-section__title.preview-title {
+            text-align: center;
+            font-size: 2em;
+            font-family: var(--font-english-sans, 'Inter', Arial, sans-serif);
+            font-weight: 800;
+            margin-bottom: 1.2em;
+            letter-spacing: 0.01em;
+        }
+        .preview-label {
+            font-family: var(--font-english-sans, 'Inter', Arial, sans-serif);
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 0.5em;
+            display: block;
+        }
+        #inputText {
+            width: 100%;
+            max-width: 480px;
+            min-height: 120px;
+            font-family: 'dn-dravida', serif !important;
+            height: 180px;
+            font-family: inherit;
+            padding: 0.7em 1em;
+            border-radius: 8px;
+            border: 1.5px solid #cbb;
+            margin-bottom: 1.2em;
+            resize: vertical;
+            overflow-y: auto;
+            white-space: pre-line;
+            background: #f7f3ea;
+            color: #391a1a;
+            box-shadow: 0 1px 4px #0001;
+            transition: border 0.2s;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #inputText:focus {
+            border: 1.5px solid var(--color-crimson-light, #6a2a2a);
+            outline: none;
+        }
+        .preview-box {
+            min-height: 80px;
+            max-width: 480px;
+            width: 100%;
+            border: 1.5px solid #e0e0e0;
+            background: #f7f3ea;
+            border-radius: 8px;
+            padding: 1.1em 1em;
+            font-size: 1.5em;
+            margin-bottom: 1.2em;
+            font-family: 'dn-dravida', serif;
+            word-break: break-word;
+            color: #222;
+            box-shadow: 0 1px 4px #0001;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            white-space: pre-line;
+            line-height: 2.1;
+        }
+        #downloadBtn {
+            display: block;
+            margin: 0 auto 0.5em auto;
+            padding: 0.7em 2.2em;
+            font-size: 1.1em;
+            background: var(--color-crimson, #391a1a);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: var(--font-english-sans, 'Inter', Arial, sans-serif);
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            box-shadow: 0 1px 4px #0001;
+            transition: background 0.2s;
+        }
+        #downloadBtn:hover {
+            background: var(--color-crimson-light, #6a2a2a);
+        }
+        .note {
+            text-align: center;
+            color: #6a2a2a;
+            font-size: 0.98em;
+            margin-top: 1.5em;
+            font-family: var(--font-english-serif, 'Georgia', serif);
+        }
+    </style>
+    <!-- jsPDF and html2canvas for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header__topline"></div>
+        <h1 class="site-header__title">Dēvanāgarī Drāviḍā</h1>
+        <button class="menu-toggle" aria-label="Open menu" onclick="document.querySelector('.site-header').classList.toggle('menu-open')">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="../">Main Home</a>
+            <a href="glyphdesign.html">Glyph Design</a>
+            <a href="shobhikadravida.html">Shobhika Dravida</a>
+            <a href="downloads.html">Downloads</a>
+            <a href="preview.html" class="active">Text Preview</a>
+        </div>
+    </header>
+    <div class="site-container">
+        <main class="site-main">
+            <h2 class="site-section__title preview-title english-sans">Shobhika Dravida Text Preview & PDF Export</h2>
+            <label for="inputText" class="preview-label english-sans">Enter text to preview:</label>
+            <textarea id="inputText" class="english-serif" placeholder="Type or paste your text here..."></textarea>
+            <div class="preview-box dn-dravida" id="previewBox"></div>
+            <button id="downloadBtn">Download as PDF</button>
+        </main>
+    </div>
+    <script>
+        // Live preview
+        const inputText = document.getElementById('inputText');
+        const previewBox = document.getElementById('previewBox');
+        inputText.addEventListener('input', function() {
+            previewBox.innerText = inputText.value;
+        });
+        // Initial preview
+        previewBox.innerText = inputText.value;
+
+        // PDF download
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            html2canvas(previewBox, {
+                backgroundColor: '#fff',
+                scale: 2
+            }).then(function(canvas) {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new window.jspdf.jsPDF({
+                    orientation: 'p',
+                    unit: 'pt',
+                    format: 'a4'
+                });
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = pageWidth - 80;
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let y = 40;
+                let remainingHeight = imgHeight;
+                let position = y;
+                let pageImgHeight = pageHeight - 2 * y;
+                let sX = 0;
+                let sY = 0;
+                let sWidth = canvas.width;
+                let sHeight = Math.floor((pageImgHeight * canvas.width) / imgWidth);
+
+                // If the image fits on one page
+                if (imgHeight <= pageImgHeight) {
+                    pdf.addImage(imgData, 'PNG', 40, y, imgWidth, imgHeight);
+                } else {
+                    let pageCount = 0;
+                    while (remainingHeight > 0) {
+                        let pageCanvas = document.createElement('canvas');
+                        pageCanvas.width = canvas.width;
+                        pageCanvas.height = sHeight;
+                        let ctx = pageCanvas.getContext('2d');
+                        ctx.fillStyle = '#fff';
+                        ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+                        ctx.drawImage(canvas, sX, sY, sWidth, sHeight, 0, 0, sWidth, sHeight);
+                        let pageImgData = pageCanvas.toDataURL('image/png');
+                        if (pageCount > 0) pdf.addPage();
+                        pdf.addImage(pageImgData, 'PNG', 40, y, imgWidth, pageImgHeight);
+                        remainingHeight -= pageImgHeight;
+                        sY += sHeight;
+                        pageCount++;
+                        // For the last page, adjust sHeight if needed
+                        if (remainingHeight < pageImgHeight) {
+                            sHeight = Math.floor((remainingHeight * canvas.width) / imgWidth);
+                            if (sHeight <= 0) break;
+                        }
+                    }
+                }
+                pdf.save('shobhika-dravida-text.pdf');
+            });
+        });
+        // Dropdown menu close on click outside (copied from other pages)
+        document.addEventListener('click', function(e) {
+            const header = document.querySelector('.site-header');
+            if (header && !header.contains(e.target) && header.classList.contains('menu-open')) {
+                header.classList.remove('menu-open');
+            }
+        });
+    </script>
+</body>
+</html>
