@@ -129,11 +129,12 @@
     </header>
     <div class="site-container">
         <main class="site-main">
-            <h2 class="site-section__title preview-title english-sans">Shobhika Dravida Text Preview & PDF Export</h2>
-            <label for="inputText" class="preview-label english-sans">Enter text to preview:</label>
-            <textarea id="inputText" class="english-serif" placeholder="Type or paste your text here..."></textarea>
-            <div class="preview-box dn-dravida" id="previewBox"></div>
-            <button id="downloadBtn">Download as PDF</button>
+            <h2 class="site-section__title module-title english-sans" style="font-size:2.1em; font-weight:800; margin-bottom:1.2em; text-align:center; letter-spacing:0.01em;">Text Preview</h2>
+            <section class="site-section">
+                <h3 class="english-sans">Enter text to preview:</h3>
+                <textarea id="inputText" class="english-serif" placeholder="Type or paste your text here..."></textarea>
+                <div class="preview-box dn-dravida" id="previewBox"></div>
+            </section>
         </main>
     </div>
     <script>
@@ -145,61 +146,7 @@
         });
         // Initial preview
         previewBox.innerText = inputText.value;
-
-        // PDF download
-        document.getElementById('downloadBtn').addEventListener('click', function() {
-            html2canvas(previewBox, {
-                backgroundColor: '#fff',
-                scale: 2
-            }).then(function(canvas) {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new window.jspdf.jsPDF({
-                    orientation: 'p',
-                    unit: 'pt',
-                    format: 'a4'
-                });
-                const pageWidth = pdf.internal.pageSize.getWidth();
-                const pageHeight = pdf.internal.pageSize.getHeight();
-                const imgWidth = pageWidth - 80;
-                const imgHeight = canvas.height * imgWidth / canvas.width;
-                let y = 40;
-                let remainingHeight = imgHeight;
-                let position = y;
-                let pageImgHeight = pageHeight - 2 * y;
-                let sX = 0;
-                let sY = 0;
-                let sWidth = canvas.width;
-                let sHeight = Math.floor((pageImgHeight * canvas.width) / imgWidth);
-
-                // If the image fits on one page
-                if (imgHeight <= pageImgHeight) {
-                    pdf.addImage(imgData, 'PNG', 40, y, imgWidth, imgHeight);
-                } else {
-                    let pageCount = 0;
-                    while (remainingHeight > 0) {
-                        let pageCanvas = document.createElement('canvas');
-                        pageCanvas.width = canvas.width;
-                        pageCanvas.height = sHeight;
-                        let ctx = pageCanvas.getContext('2d');
-                        ctx.fillStyle = '#fff';
-                        ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
-                        ctx.drawImage(canvas, sX, sY, sWidth, sHeight, 0, 0, sWidth, sHeight);
-                        let pageImgData = pageCanvas.toDataURL('image/png');
-                        if (pageCount > 0) pdf.addPage();
-                        pdf.addImage(pageImgData, 'PNG', 40, y, imgWidth, pageImgHeight);
-                        remainingHeight -= pageImgHeight;
-                        sY += sHeight;
-                        pageCount++;
-                        // For the last page, adjust sHeight if needed
-                        if (remainingHeight < pageImgHeight) {
-                            sHeight = Math.floor((remainingHeight * canvas.width) / imgWidth);
-                            if (sHeight <= 0) break;
-                        }
-                    }
-                }
-                pdf.save('shobhika-dravida-text.pdf');
-            });
-        });
+        
         // Dropdown menu close on click outside (copied from other pages)
         document.addEventListener('click', function(e) {
             const header = document.querySelector('.site-header');
